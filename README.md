@@ -15,7 +15,7 @@ Photostream delivery
 ![Alt text](docs/architecture/diagrams/structurizr-Components.png?raw=true "System Context")
 
 ### 4. Code
-#### Pierrot DB Sync
+#### Pierrot DB Sync Service
 This service keeps Pierrot DB on sync. Pierrot has two _databases_: 
 * `pierrot-meta.json` to store the total number of photos in Pierrot DB.
 * `pierrot-db.json` to store all metadata (URLs) of all photos registered by Flickr.
@@ -64,7 +64,7 @@ sequenceDiagram
     PA-->>-PSL: Pierrot DB synced
 ```
 
-#### Pierrot Photo Publish
+#### Pierrot Photo Publish Service
 This service publish a photo on Twitter. The service runs weekly and checks `pierrot-db.json` and `pierrot-wal.json` to randomly select an unpublished photo, download it from Flickr and publish it on Twitter.
 
 ```mermaid
