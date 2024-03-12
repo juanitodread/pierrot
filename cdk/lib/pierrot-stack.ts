@@ -9,7 +9,9 @@ export class PierrotStack extends cdk.Stack {
     new s3.Bucket(this, `PierrotDB${environment}`, {
       bucketName: `pierrot-db-${environment.toLowerCase()}`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      publicReadAccess: true,
+      publicReadAccess: false,
+      accessControl: s3.BucketAccessControl.BUCKET_OWNER_FULL_CONTROL,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
     });
   }
 }
