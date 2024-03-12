@@ -11,7 +11,7 @@ export class PierrotStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       publicReadAccess: false,
       accessControl: s3.BucketAccessControl.BUCKET_OWNER_FULL_CONTROL,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     });
   }
 }
