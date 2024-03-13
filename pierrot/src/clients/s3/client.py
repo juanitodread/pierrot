@@ -6,27 +6,31 @@ from pierrot.src.clients.s3.config import S3Config
 
 
 class S3:
+  _PIERROT_METADATA_DB = 'pierrot-meta.json'
+  _PIERROT_PHOTOS_DB = 'pierrot-db.json'
+  _PIERROT_WAL_DB = 'pierrot-wal.json'
+
   def __init__(self, config: S3Config) -> None:
     self._config = config
     self._s3 = boto3.resource('s3')
 
   def get_metadata_db(self) -> dict:
-    return self._get_object(self._config.bucket, 'pierrot-meta.json')
+    return self._get_object(self._config.bucket, S3._PIERROT_METADATA_DB)
 
   def save_metadata_db(self, content: dict) -> None:
-    self._put_object(self._config.bucket, 'pierrot-meta.json', content)
+    self._put_object(self._config.bucket, S3._PIERROT_METADATA_DB, content)
 
   def get_photos_db(self) -> dict:
-    return self._get_object(self._config.bucket, 'pierrot-db.json')
+    return self._get_object(self._config.bucket, S3._PIERROT_PHOTOS_DB)
 
   def save_photos_db(self, content: dict) -> None:
-    self._put_object(self._config.bucket, 'pierrot-db.json', content)
+    self._put_object(self._config.bucket, S3._PIERROT_PHOTOS_DB, content)
 
   def get_wal_db(self) -> dict:
-    return self._get_object(self._config.bucket, 'pierrot-wal.json')
+    return self._get_object(self._config.bucket, S3._PIERROT_WAL_DB)
 
   def save_wal_db(self, content: dict) -> None:
-    self._put_object(self._config.bucket, 'pierrot-wal.json', content)
+    self._put_object(self._config.bucket, S3._PIERROT_WAL_DB, content)
 
   def _get_object(self, bucket: str, key: str) -> dict:
     print(f'GETTING OBJECT: bucket={bucket}, key={key}')
@@ -45,22 +49,22 @@ class S3Local(S3):
     self._config = config
 
   def get_metadata_db(self) -> dict:
-    return self._read_file(f'{self._config.bucket}pierrot-meta.json')
+    return self._read_file(f'{self._config.bucket}{S3._PIERROT_METADATA_DB}')
 
   def save_metadata_db(self, content: dict) -> None:
-    self._write_file(f'{self._config.bucket}pierrot-meta.json', content=content)
+    self._write_file(f'{self._config.bucket}{S3._PIERROT_METADATA_DB}', content=content)
 
   def get_photos_db(self) -> dict:
-    return self._read_file(f'{self._config.bucket}pierrot-db.json')
+    return self._read_file(f'{self._config.bucket}{S3._PIERROT_PHOTOS_DB}')
 
   def save_photos_db(self, content: dict) -> None:
-    self._write_file(f'{self._config.bucket}pierrot-db.json', content=content)
+    self._write_file(f'{self._config.bucket}{S3._PIERROT_PHOTOS_DB}', content=content)
 
   def get_wal_db(self) -> dict:
-    return self._read_file(f'{self._config.bucket}pierrot-wal.json')
+    return self._read_file(f'{self._config.bucket}{S3._PIERROT_WAL_DB}')
 
   def save_wal_db(self, content: dict) -> None:
-    self._write_file(f'{self._config.bucket}pierrot-wal.json', content=content)
+    self._write_file(f'{self._config.bucket}{S3._PIERROT_WAL_DB}', content=content)
 
   def _write_file(self, file_name: str, content: dict) -> None:
     with open(file_name, 'w', encoding='utf-8') as f:
