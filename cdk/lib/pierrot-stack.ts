@@ -17,7 +17,7 @@ export class PierrotStack extends cdk.Stack {
     });
 
     new lambda.Function(this, `PierrotSyncDB${environment}`, {
-      functionName: 'pierrot-sync-db',
+      functionName: `pierrot-sync-db-${environment.toLowerCase()}`,
       handler: 'lambdas.sync_db.do_work',
       runtime: lambda.Runtime.PYTHON_3_12,
       code: lambda.Code.fromAsset('../pierrot-service.zip'),
