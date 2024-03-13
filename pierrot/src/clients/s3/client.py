@@ -3,6 +3,10 @@ import json
 import boto3
 
 from pierrot.src.clients.s3.config import S3Config
+from pierrot.src.logging import get_logger
+
+
+log = get_logger(__name__)
 
 
 class S3:
@@ -33,13 +37,13 @@ class S3:
     self._put_object(self._config.bucket, S3._PIERROT_WAL_DB, content)
 
   def _get_object(self, bucket: str, key: str) -> dict:
-    print(f'GETTING OBJECT: bucket={bucket}, key={key}')
+    log.info(f'Getting object: bucket={bucket}, key={key}')
 
     object = self._s3.Object(bucket, key)
     return json.loads(object.get()['Body'].read().decode('utf-8'))
 
   def _put_object(self, bucket: str, key: str, content: dict) -> None:
-    print(f'PUTTING OBJECT: bucket={bucket}, key={key}, objects-length={len(content)}')
+    log.info(f'Putting object: bucket={bucket}, key={key}, objects-length={len(content)}')
 
     object = self._s3.Object(bucket, key)
     object.put(Body=(bytes(json.dumps(content).encode('UTF-8'))))
