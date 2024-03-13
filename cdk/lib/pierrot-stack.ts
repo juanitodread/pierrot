@@ -1,5 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
 
 export class PierrotStack extends cdk.Stack {
@@ -13,6 +14,13 @@ export class PierrotStack extends cdk.Stack {
       accessControl: s3.BucketAccessControl.BUCKET_OWNER_FULL_CONTROL,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       versioned: true,
+    });
+
+    new lambda.Function(this, `PierrotSyncDB${environment}`, {
+      functionName: 'pierrot-sync-db',
+      handler: 'lambdas.sync_db.do_work',
+      runtime: lambda.Runtime.PYTHON_3_12,
+      code: lambda.Code.fromAsset('../pierrot-service.zip'),
     });
   }
 }
