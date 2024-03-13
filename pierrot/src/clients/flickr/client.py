@@ -24,7 +24,9 @@ class Flickr:
 
   def get_photos_total(self, user: str) -> PhotoTotal | None:
     log.info(f'Getting photos total of user: user={user}')
+
     params = self._get_photos_params(user, per_page=1)
+
     log.debug('URL: %s', Flickr.API_URL)
     log.debug('PARAMS: %s', params)
     response = requests.get(url=Flickr.API_URL, params=params)
@@ -45,9 +47,12 @@ class Flickr:
 
   def get_photos_metadata(self, user: str) -> dict[str, PhotoMeta] | None:
     log.info(f'Getting photos metadata of user: user={user}')
+
     with_properties = ['path_alias', 'original_format', 'o_dims', 'tags', 'url_k']
     params = self._get_photos_params(user, extra_params=with_properties)
 
+    log.debug('URL: %s', Flickr.API_URL)
+    log.debug('PARAMS: %s', params)
     response = requests.get(url=Flickr.API_URL, params=params)
 
     if response.status_code != 200:
