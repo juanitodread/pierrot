@@ -7,9 +7,8 @@ from pierrot.src.clients.s3.config import S3Config
 
 class S3:
   def __init__(self, config: S3Config) -> None:
-    session = boto3.Session(profile_name='pierrot')
     self._config = config
-    self._s3 = session.resource('s3')
+    self._s3 = boto3.resource('s3')
 
   def get_metadata_db(self) -> dict:
     return self._get_object(self._config.bucket, 'pierrot-meta.json')
