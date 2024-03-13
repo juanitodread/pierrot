@@ -7,6 +7,7 @@ from pierrot.src.clients.s3.config import S3Config
 class Config:
   FLICKR_API_KEY = os.getenv('FLICKR_API_KEY')
   FLICKR_API_SECRET = os.getenv('FLICKR_API_SECRET')
+  FLICKR_PHOTOS_OWNER = os.getenv('FLICKR_PHOTOS_OWNER')
 
   AWS_S3_BUCKET = os.getenv('AWS_S3_BUCKET')
 
@@ -20,6 +21,7 @@ class Config:
     return FlickrConfig(
       api_key=Config.FLICKR_API_KEY,
       api_secret=Config.FLICKR_API_SECRET,
+      photos_owner=Config.FLICKR_PHOTOS_OWNER,
     )
 
   @staticmethod

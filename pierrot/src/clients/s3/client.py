@@ -53,22 +53,22 @@ class S3Local(S3):
     self._config = config
 
   def get_metadata_db(self) -> dict:
-    return self._read_file(f'{self._config.bucket}{S3._PIERROT_METADATA_DB}')
+    return self._read_file(f'{self._config.bucket}/{S3._PIERROT_METADATA_DB}')
 
   def save_metadata_db(self, content: dict) -> None:
-    self._write_file(f'{self._config.bucket}{S3._PIERROT_METADATA_DB}', content=content)
+    self._write_file(f'{self._config.bucket}/{S3._PIERROT_METADATA_DB}', content=content)
 
   def get_photos_db(self) -> dict:
     return self._read_file(f'{self._config.bucket}{S3._PIERROT_PHOTOS_DB}')
 
   def save_photos_db(self, content: dict) -> None:
-    self._write_file(f'{self._config.bucket}{S3._PIERROT_PHOTOS_DB}', content=content)
+    self._write_file(f'{self._config.bucket}/{S3._PIERROT_PHOTOS_DB}', content=content)
 
   def get_wal_db(self) -> dict:
-    return self._read_file(f'{self._config.bucket}{S3._PIERROT_WAL_DB}')
+    return self._read_file(f'{self._config.bucket}/{S3._PIERROT_WAL_DB}')
 
   def save_wal_db(self, content: dict) -> None:
-    self._write_file(f'{self._config.bucket}{S3._PIERROT_WAL_DB}', content=content)
+    self._write_file(f'{self._config.bucket}/{S3._PIERROT_WAL_DB}', content=content)
 
   def _write_file(self, file_name: str, content: dict) -> None:
     with open(file_name, 'w', encoding='utf-8') as f:
