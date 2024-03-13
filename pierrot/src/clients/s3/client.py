@@ -1,8 +1,10 @@
 import json
 
 import boto3
+from botocore.exceptions import BotoCoreError
 
 from pierrot.src.clients.s3.config import S3Config
+from pierrot.src.errors import PierrotExeception
 from pierrot.src.logging import get_logger
 
 
@@ -39,14 +41,20 @@ class S3:
   def _get_object(self, bucket: str, key: str) -> dict:
     log.info(f'Getting object: bucket={bucket}, key={key}')
 
-    object = self._s3.Object(bucket, key)
-    return json.loads(object.get()['Body'].read().decode('utf-8'))
+    try:
+      object = self._s3.Object(bucket, key)
+      return json.loads(object.get()['Body'].read().decode('utf-8'))
+    except BotoCoreError as error:
+      raise PierrotExeception(error)
 
   def _put_object(self, bucket: str, key: str, content: dict) -> None:
     log.info(f'Putting object: bucket={bucket}, key={key}, objects-length={len(content)}')
 
-    object = self._s3.Object(bucket, key)
-    object.put(Body=(bytes(json.dumps(content).encode('UTF-8'))))
+    try:
+      object = self._s3.Object(bucket, key)
+      object.put(Body=(bytes(json.dumps(content).encode('UTF-8'))))
+    except BotoCoreError as error:
+      raise PierrotExeception(error)
 
 class S3Local(S3):
   def __init__(self, config: S3Config) -> None:
