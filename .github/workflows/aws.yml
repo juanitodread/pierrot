@@ -21,7 +21,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt -t .; fi
-        zip -r pierrot-service.zip . -x '*cdk*' -x '*docs*'
+        zip -r pierrot-service.zip . -x 'cdk/\*' -x 'docs/\*'
 
     - name: Deploy to AWS
       uses: appleboy/lambda-action@v0.1.9
