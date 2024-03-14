@@ -8,7 +8,7 @@ from pierrot.src.clients.flickr.config import FlickrConfig
 
 @pytest.fixture
 def get_config() -> FlickrConfig:
-  return FlickrConfig('api_key', 'api_secret')
+  return FlickrConfig('api_key', 'api_secret', 'flickr_owner')
 
 
 class TestFlickr:
@@ -43,7 +43,7 @@ class TestFlickr:
       json={'code': 401},
     )
 
-    flickr = Flickr(FlickrConfig('invalid-api-key', 'invalid-secret'))
+    flickr = Flickr(FlickrConfig('invalid-api-key', 'invalid-secret', 'flickr_owner'))
     photos = flickr.get_photos_total('akira')
 
     assert photos is None
@@ -154,7 +154,7 @@ class TestFlickr:
       json={'code': 401},
     )
 
-    flickr = Flickr(FlickrConfig('invalid-api-key', 'invalid-secret'))
+    flickr = Flickr(FlickrConfig('invalid-api-key', 'invalid-secret', 'flickr_owner'))
     photos = flickr.get_photos_metadata('akira')
 
     assert photos is None
