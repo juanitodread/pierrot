@@ -35,6 +35,7 @@ class Flickr:
       log.error('failed calling API: %s', response.text)
       return None
 
+    log.debug(f'FLICKR RESPONSE: {response.text}')
     total_photos = response.json()
 
     if 'code' in total_photos and total_photos['code'] != 200:
