@@ -7,3 +7,4 @@ class TwitterConfig:
   consumer_secret: str
   access_token: str
   access_token_secret: str
+  tweet_text: str

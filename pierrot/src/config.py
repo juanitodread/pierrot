@@ -2,6 +2,7 @@ import os
 
 from pierrot.src.clients.flickr.config import FlickrConfig
 from pierrot.src.clients.s3.config import S3Config
+from pierrot.src.clients.twitter.config import TwitterConfig
 
 
 class Config:
@@ -15,6 +16,7 @@ class Config:
   TWITTER_CONSUMER_SECRET = os.getenv('TWITTER_CONSUMER_SECRET')
   TWITTER_ACCESS_TOKEN = os.getenv('TWITTER_ACCESS_TOKEN')
   TWITTER_ACCESS_TOKEN_SECRET = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+  TWITTER_TWEET_TEXT = os.getenv('TWITTER_TWEET_TEXT', '')
 
   @staticmethod
   def get_flickr_config() -> FlickrConfig:
@@ -31,5 +33,11 @@ class Config:
     )
 
   @staticmethod
-  def get_twitter_config() -> None:
-    return None
+  def get_twitter_config() -> TwitterConfig:
+    return TwitterConfig(
+      consumer_key=Config.TWITTER_CONSUMER_KEY,
+      consumer_secret=Config.TWITTER_CONSUMER_SECRET,
+      access_token=Config.TWITTER_ACCESS_TOKEN,
+      access_token_secret=Config.TWITTER_ACCESS_TOKEN_SECRET,
+      tweet_text=Config.TWITTER_TWEET_TEXT,
+    )
