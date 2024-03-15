@@ -21,5 +21,6 @@ def do_work(event, context) -> None:
     flickr_username=flickr_config.photos_owner,
     flickr=flickr,
     s3=s3,
+    twitter=None,
   )
   pierrot.sync_db()
