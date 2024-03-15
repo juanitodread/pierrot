@@ -80,7 +80,7 @@ class Pierrot:
       return
 
     try:
-      photo_file_name = f'photo.{unpublished_photo["original_format"]}'
+      photo_file_name = f'/tmp/photo.{unpublished_photo["original_format"]}'
       self._flickr.download_photo(unpublished_photo['url'], photo_file_name)
     except PierrotExeception as error:
       log.error('Failed downloading photo from Flickr is possible the file does not exist. '
