@@ -89,9 +89,12 @@ class Pierrot:
 
     try:
       twitter_photo_id = self._twitter.upload_photo(photo_file_name)
-      self._twitter.publish_tweet(twitter_photo_id, self._twitter._config.tweet_text)
+      self._twitter.publish_tweet(twitter_photo_id, self._format_message(self._twitter._config.tweet_text))
     except PierrotExeception as error:
       log.error(f'Failed publishing photo to Twitter: {error}')
       return
 
     log.info(f'Photo published to Twitter: photo_url={unpublished_photo["url"]}')
+
+  def _format_message(self, message: str) -> str:
+    return message.replace('~', '\n')
