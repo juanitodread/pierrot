@@ -21,6 +21,15 @@ export class PierrotStack extends cdk.Stack {
       handler: 'lambdas.sync_db.do_work',
       runtime: lambda.Runtime.PYTHON_3_12,
       code: lambda.Code.fromAsset('../pierrot-service.zip'),
+      timeout: cdk.Duration.seconds(60),
+    });
+
+    new lambda.Function(this, `PierrotPublishPhoto${environment}`, {
+      functionName: `pierrot-publish-photo-${environment.toLowerCase()}`,
+      handler: 'lambdas.publish_photo.do_work',
+      runtime: lambda.Runtime.PYTHON_3_12,
+      code: lambda.Code.fromAsset('../pierrot-service.zip'),
+      timeout: cdk.Duration.seconds(60)
     });
   }
 }
