@@ -3,7 +3,7 @@ from datetime import datetime
 import shutil
 
 import requests
-import urllib.request
+from urllib.request import urlopen, Request
 
 from pierrot.src.clients.flickr.config import FlickrConfig
 from pierrot.src.errors import PierrotExeception
@@ -89,7 +89,11 @@ class Flickr:
     log.info(f'Downloading photo from Flickr: url={photo_url}, file={file_name}')
 
     try:
-      with urllib.request.urlopen(photo_url) as response, open(file_name, 'wb') as out_file:
+      headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)',
+      }
+
+      with urlopen(Request(photo_url, headers=headers)) as response, open(file_name, 'wb') as out_file:
         shutil.copyfileobj(response, out_file)
     except Exception as error:
       log.error(f'failed downloading photo: {error}')
