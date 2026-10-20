@@ -89,16 +89,24 @@ class Pierrot:
                 f'Photo metadata was stored in WAL to mark as published and discarded next time: {error}')
       return
 
+    post_text = self._format_message(self._twitter._config.tweet_text)
+    photo_url = unpublished_photo["url"]
+
+    self._publish_twitter(photo_file_name, photo_url, post_text)
+    self._publish_bluesky(photo_file_name, photo_url, post_text)
+
+  def _publish_twitter(self, photo_file_name: str, photo_url: str, text: str) -> None:
     try:
       twitter_photo_id = self._twitter.upload_photo(photo_file_name)
-      self._twitter.publish_tweet(twitter_photo_id, self._format_message(self._twitter._config.tweet_text))
-      log.info(f'Photo published to Twitter: photo_url={unpublished_photo["url"]}')
+      self._twitter.publish_tweet(twitter_photo_id, text)
+      log.info(f'Photo published to Twitter: {photo_url=}')
     except PierrotExeception as error:
       log.error(f'Failed publishing photo to Twitter: {error}')
 
+  def _publish_bluesky(self, photo_file_name: str, photo_url: str, text: str) -> None:
     try:
-      self._bluesky.publish_post(photo_file_name, self._format_message(self._twitter._config.tweet_text))
-      log.info(f'Photo published to Bluesky: photo_url={unpublished_photo["url"]}')
+      self._bluesky.publish_post(photo_file_name, text)
+      log.info(f'Photo published to Bluesky: {photo_url=}')
     except PierrotExeception as error:
       log.error(f'Failed publishing photo to Bluesky: {error}')
 
