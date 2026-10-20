@@ -4,6 +4,7 @@ import random
 from pierrot.src.clients.flickr.client import Flickr
 from pierrot.src.clients.s3.client import S3
 from pierrot.src.clients.twitter.client import Twitter
+from pierrot.src.clients.bluesky.client import Bluesky
 from pierrot.src.errors import PierrotExeception
 from pierrot.src.logging import get_logger
 
@@ -12,11 +13,12 @@ log = get_logger(__name__)
 
 
 class Pierrot:
-  def __init__(self, flickr_username: str, flickr: Flickr, s3: S3, twitter: Twitter) -> None:
+  def __init__(self, flickr_username: str, flickr: Flickr, s3: S3, twitter: Twitter, bluesky: Bluesky) -> None:
     self._flickr_username = flickr_username
     self._flickr = flickr
     self._s3 = s3
     self._twitter = twitter
+    self._bluesky = bluesky
 
   def sync_db(self) -> None:
     log.info('Syncing Pierrot DB')
@@ -90,11 +92,15 @@ class Pierrot:
     try:
       twitter_photo_id = self._twitter.upload_photo(photo_file_name)
       self._twitter.publish_tweet(twitter_photo_id, self._format_message(self._twitter._config.tweet_text))
+      log.info(f'Photo published to Twitter: photo_url={unpublished_photo["url"]}')
     except PierrotExeception as error:
       log.error(f'Failed publishing photo to Twitter: {error}')
-      return
 
-    log.info(f'Photo published to Twitter: photo_url={unpublished_photo["url"]}')
+    try:
+      self._bluesky.publish_post(photo_file_name, self._format_message(self._twitter._config.tweet_text))
+      log.info(f'Photo published to Bluesky: photo_url={unpublished_photo["url"]}')
+    except PierrotExeception as error:
+      log.error(f'Failed publishing photo to Bluesky: {error}')
 
   def _format_message(self, message: str) -> str:
     return message.replace('~', '\n')

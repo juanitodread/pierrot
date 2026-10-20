@@ -56,6 +56,7 @@ class S3:
     except BotoCoreError as error:
       raise PierrotExeception(error)
 
+
 class S3Local(S3):
   def __init__(self, config: S3Config) -> None:
     self._config = config

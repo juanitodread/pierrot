@@ -8,3 +8,4 @@ class TwitterConfig:
   access_token: str
   access_token_secret: str
   tweet_text: str
+  use_mock: bool = True
