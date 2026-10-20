@@ -1,5 +1,5 @@
 # pierrot
-Photostream delivery
+Photostream delivery.
 
 ## Research
 * Check Flickr API to list photos/files and possible filtering.
@@ -111,4 +111,41 @@ sequenceDiagram
     PS3C-->>-PA: Published photos DB updated
 
     PA-->>-PPL: Photo published
+```
+
+## Run in local
+The easyest way to run the project in local is with **uv**.
+
+1. Create a new virtual environment. This will create a new .venv directory in the root of the project directory (pierrot).
+```bash
+uv venv --python 3.12 .venv
+```
+
+2. Activate the virtual environment.
+```bash
+source .venv/bin/activate
+```
+
+3. Install the dependencies. **It is important that you install the dependencies thru uv**
+```bash
+uv pip install -r requirements.txt
+```
+
+4. Run the tests
+```bash
+sh run_tests.sh
+```
+
+
+In the case you need to install additional dependencies is important you do thru uv.
+```bash
+uv pip install -r requirements.txt
+```
+
+or add the dependency and then freeze `requirements.txt` file.
+
+```bash
+uv pip install my-dependency
+
+uv pip freeze > requirements.txt
 ```

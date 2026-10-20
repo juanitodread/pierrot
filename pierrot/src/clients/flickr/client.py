@@ -6,7 +6,7 @@ import requests
 from urllib.request import urlopen, Request
 
 from pierrot.src.clients.flickr.config import FlickrConfig
-from pierrot.src.errors import PierrotExeception
+from pierrot.src.errors import PierrotException
 from pierrot.src.logging import get_logger
 
 
@@ -97,7 +97,7 @@ class Flickr:
         shutil.copyfileobj(response, out_file)
     except Exception as error:
       log.error(f'failed downloading photo: {error}')
-      raise PierrotExeception(error)
+      raise PierrotException(error)
 
   def _get_photos_params(self,
                          username: str,

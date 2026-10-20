@@ -1,3 +1,3 @@
-class PierrotExeception(Exception):
+class PierrotException(Exception):
   def __init__(self, error: Exception):
     super().__init__('Pierrot error: ', error)
