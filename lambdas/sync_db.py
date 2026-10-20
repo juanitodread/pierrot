@@ -22,5 +22,6 @@ def do_work(event, context) -> None:
     flickr=flickr,
     s3=s3,
     twitter=None,
+    bluesky=None,
   )
   pierrot.sync_db()
