@@ -5,7 +5,7 @@ from pierrot.src.clients.flickr.client import Flickr
 from pierrot.src.clients.s3.client import S3
 from pierrot.src.clients.twitter.client import Twitter
 from pierrot.src.clients.bluesky.client import Bluesky
-from pierrot.src.errors import PierrotExeception
+from pierrot.src.errors import PierrotException
 from pierrot.src.logging import get_logger
 
 
@@ -30,7 +30,7 @@ class Pierrot:
 
     try:
       metadata_db = self._s3.get_metadata_db()
-    except PierrotExeception as error:
+    except PierrotException as error:
       log.error(f'Failed getting metadata DB from S3: {error}')
       return
 
@@ -51,7 +51,7 @@ class Pierrot:
     try:
       self._s3.save_metadata_db(total_photos_response)
       self._s3.save_photos_db(updated_photos_metadata)
-    except PierrotExeception as error:
+    except PierrotException as error:
       log.error(f'Failed updating DB in S3: {error}')
       return
 
@@ -63,7 +63,7 @@ class Pierrot:
     try:
       photos_db = self._s3.get_photos_db()
       wal_photos_db = self._s3.get_wal_db()
-    except PierrotExeception as error:
+    except PierrotException as error:
       log.error(f'Failed getting Pierrot DB from S3: {error}')
       return
 
@@ -77,14 +77,14 @@ class Pierrot:
     try:
       wal_photos_db[unpublished_photo['id']] = unpublished_photo
       self._s3.save_wal_db(wal_photos_db)
-    except PierrotExeception as error:
+    except PierrotException as error:
       log.error(f'Failed storing WAL DB to S3: {error}')
       return
 
     try:
       photo_file_name = f'/tmp/photo.{unpublished_photo["original_format"]}'
       self._flickr.download_photo(unpublished_photo['url'], photo_file_name)
-    except PierrotExeception as error:
+    except PierrotException as error:
       log.error('Failed downloading photo from Flickr is possible the file does not exist. '
                 f'Photo metadata was stored in WAL to mark as published and discarded next time: {error}')
       return
@@ -100,14 +100,14 @@ class Pierrot:
       twitter_photo_id = self._twitter.upload_photo(photo_file_name)
       self._twitter.publish_tweet(twitter_photo_id, text)
       log.info(f'Photo published to Twitter: {photo_url=}')
-    except PierrotExeception as error:
+    except PierrotException as error:
       log.error(f'Failed publishing photo to Twitter: {error}')
 
   def _publish_bluesky(self, photo_file_name: str, photo_url: str, text: str) -> None:
     try:
       self._bluesky.publish_post(photo_file_name, text)
       log.info(f'Photo published to Bluesky: {photo_url=}')
-    except PierrotExeception as error:
+    except PierrotException as error:
       log.error(f'Failed publishing photo to Bluesky: {error}')
 
   def _format_message(self, message: str) -> str:

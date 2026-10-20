@@ -1,7 +1,7 @@
 import tweepy
 
 from pierrot.src.clients.twitter.config import TwitterConfig
-from pierrot.src.errors import PierrotExeception
+from pierrot.src.errors import PierrotException
 from pierrot.src.logging import get_logger
 
 
@@ -33,7 +33,7 @@ class Twitter:
       media = self._api.media_upload(file_name)
       return media.media_id
     except Exception as error:
-      raise PierrotExeception(error)
+      raise PierrotException(error)
 
   def publish_tweet(self, photo_id: str, text: str) -> dict:
     log.info(f'Publishing tweet: photo_id={photo_id}, text={text}')
@@ -42,7 +42,7 @@ class Twitter:
       response = self._client.create_tweet(text=text, media_ids=[photo_id])
       return response.data
     except Exception as error:
-      raise PierrotExeception(error)
+      raise PierrotException(error)
 
 
 class TwitterLocal(Twitter):

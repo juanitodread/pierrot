@@ -1,7 +1,7 @@
 import pytest
 
 from unittest.mock import patch
-from pierrot.src.errors import PierrotExeception
+from pierrot.src.errors import PierrotException
 from pierrot.src.pierrot import Pierrot
 
 
@@ -118,7 +118,7 @@ class TestPierrot:
     assert 'Failed getting photos metadata from Flickr' == [rec.message for rec in caplog.records][-1]
 
   def test_sync_db_when_s3_get_metadata_db_api_fail(self, flickr_mock, s3_mock, twitter_mock, bluesky_mock, caplog):
-    s3_mock.get_metadata_db.side_effect = PierrotExeception('s3-error')
+    s3_mock.get_metadata_db.side_effect = PierrotException('s3-error')
 
     pierrot = Pierrot(
       flickr_username='flickr-username',
@@ -133,7 +133,7 @@ class TestPierrot:
     assert "Failed getting metadata DB from S3: ('Pierrot error: ', 's3-error')" == [rec.message for rec in caplog.records][-1]
 
   def test_sync_db_when_s3_save_metadata_db_api_fail(self, flickr_mock, s3_mock, twitter_mock, bluesky_mock, caplog):
-    s3_mock.save_metadata_db.side_effect = PierrotExeception('s3-error')
+    s3_mock.save_metadata_db.side_effect = PierrotException('s3-error')
 
     pierrot = Pierrot(
       flickr_username='flickr-username',
@@ -148,7 +148,7 @@ class TestPierrot:
     assert "Failed updating DB in S3: ('Pierrot error: ', 's3-error')" == [rec.message for rec in caplog.records][-1]
 
   def test_sync_db_when_s3_save_photos_db_api_fail(self, flickr_mock, s3_mock, twitter_mock, bluesky_mock, caplog):
-    s3_mock.save_photos_db.side_effect = PierrotExeception('s3-error')
+    s3_mock.save_photos_db.side_effect = PierrotException('s3-error')
 
     pierrot = Pierrot(
       flickr_username='flickr-username',
@@ -188,7 +188,7 @@ class TestPierrot:
                                                     bluesky_mock,
                                                     photos_db_content,
                                                     caplog):
-    s3_mock.get_photos_db.side_effect = PierrotExeception('s3-error')
+    s3_mock.get_photos_db.side_effect = PierrotException('s3-error')
     s3_mock.get_wal_db.return_value = {}
 
     pierrot = Pierrot(
@@ -211,7 +211,7 @@ class TestPierrot:
                                                  photos_db_content,
                                                  caplog):
     s3_mock.get_photos_db.return_value = photos_db_content
-    s3_mock.get_wal_db.side_effect = PierrotExeception('s3-error')
+    s3_mock.get_wal_db.side_effect = PierrotException('s3-error')
 
     pierrot = Pierrot(
       flickr_username='flickr-username',
@@ -234,7 +234,7 @@ class TestPierrot:
                                                   caplog):
     s3_mock.get_photos_db.return_value = photos_db_content
     s3_mock.get_wal_db.return_value = {}
-    s3_mock.save_wal_db.side_effect = PierrotExeception('s3-error')
+    s3_mock.save_wal_db.side_effect = PierrotException('s3-error')
 
     pierrot = Pierrot(
       flickr_username='flickr-username',
@@ -257,7 +257,7 @@ class TestPierrot:
                                                          caplog):
     s3_mock.get_photos_db.return_value = photos_db_content
     s3_mock.get_wal_db.return_value = {}
-    flickr_mock.download_photo.side_effect = PierrotExeception('flickr-error')
+    flickr_mock.download_photo.side_effect = PierrotException('flickr-error')
 
     pierrot = Pierrot(
       flickr_username='flickr-username',
@@ -282,7 +282,7 @@ class TestPierrot:
                                                         caplog):
     s3_mock.get_photos_db.return_value = photos_db_content
     s3_mock.get_wal_db.return_value = {}
-    twitter_mock.upload_photo.side_effect = PierrotExeception('twitter-error')
+    twitter_mock.upload_photo.side_effect = PierrotException('twitter-error')
 
     pierrot = Pierrot(
       flickr_username='flickr-username',
@@ -306,8 +306,8 @@ class TestPierrot:
                                                          caplog):
     s3_mock.get_photos_db.return_value = photos_db_content
     s3_mock.get_wal_db.return_value = {}
-    twitter_mock.publish_tweet.side_effect = PierrotExeception('twitter-error')
-    bluesky_mock.publish_post.side_effect = PierrotExeception('bluesky-error')
+    twitter_mock.publish_tweet.side_effect = PierrotException('twitter-error')
+    bluesky_mock.publish_post.side_effect = PierrotException('bluesky-error')
 
     pierrot = Pierrot(
       flickr_username='flickr-username',
@@ -331,7 +331,7 @@ class TestPierrot:
                                                         caplog):
     s3_mock.get_photos_db.return_value = photos_db_content
     s3_mock.get_wal_db.return_value = {}
-    bluesky_mock.publish_post.side_effect = PierrotExeception('bluesky-error')
+    bluesky_mock.publish_post.side_effect = PierrotException('bluesky-error')
 
     pierrot = Pierrot(
       flickr_username='flickr-username',

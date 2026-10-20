@@ -3,7 +3,7 @@ import re
 from atproto import Client, models, client_utils
 
 from pierrot.src.clients.bluesky.config import BlueskyConfig
-from pierrot.src.errors import PierrotExeception
+from pierrot.src.errors import PierrotException
 from pierrot.src.logging import get_logger
 
 
@@ -30,7 +30,7 @@ class Bluesky:
 
       log.info(f'Post sent: {image_path=}, {text=}')
     except Exception as error:
-      raise PierrotExeception(error)
+      raise PierrotException(error)
 
   def _parse_text_to_builder(self, text: str) -> client_utils.TextBuilder:
     builder = client_utils.TextBuilder()

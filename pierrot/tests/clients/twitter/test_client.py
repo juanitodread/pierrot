@@ -4,7 +4,7 @@ import pytest
 
 from pierrot.src.clients.twitter.client import Twitter
 from pierrot.src.clients.twitter.config import TwitterConfig
-from pierrot.src.errors import PierrotExeception
+from pierrot.src.errors import PierrotException
 
 
 @pytest.fixture()
@@ -42,7 +42,7 @@ class TestTwitter:
   def test_upload_photo_when_api_error(self, twitter):
     twitter._api.media_upload.side_effect = Exception('api-error')
 
-    with pytest.raises(PierrotExeception):
+    with pytest.raises(PierrotException):
       twitter.upload_photo(file_name='photo.jpg')
 
   def test_publish_tweet(self, twitter):
@@ -58,5 +58,5 @@ class TestTwitter:
   def test_publish_tweet_when_client_error(self, twitter):
     twitter._client.create_tweet.side_effect = Exception('api-error')
 
-    with pytest.raises(PierrotExeception):
+    with pytest.raises(PierrotException):
       twitter.publish_tweet(photo_id='photo-id-123', text='first tweet with photo')
