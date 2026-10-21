@@ -36,6 +36,6 @@ tlds==2026093003
 tweepy==4.14.0
 typing-extensions==4.16.0
 typing-inspection==0.4.4
-urllib3==2.0.7
+urllib3==2.8.0
 websockets==17.3
 zstandard==0.25.0
